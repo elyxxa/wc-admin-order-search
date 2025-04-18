@@ -1,0 +1,108 @@
+<?php
+
+/**
+ * Plugin Name: WooCommerce Product Search Admin powered by Algolia
+ * Plugin URI:  www.webkonsulenterne.dk
+ * Description: Search for WooCommerce products in the admin at the speed of thought with Algolia.
+ * Author:      Webkonsulenterne, Shakir
+ * Author URI:  www.webkonsulenterne.dk
+ * Version:     1.0.0
+ * Domain Path: /languages.
+ * WC requires at least: 2.2
+ * WC tested up to: 6.8
+ */
+define('WC_PSA_VERSION', '1.0.0');
+
+if (! defined('WC_PSA_FILE')) {
+    define('WC_PSA_FILE', __FILE__);
+}
+
+if (! defined('WC_PSA_PATH')) {
+    define('WC_PSA_PATH', plugin_dir_path(WC_PSA_FILE));
+}
+
+// Declare HPOS compatibility
+add_action('before_woocommerce_init', function () {
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+    }
+});
+
+add_action(
+    'init',
+    function () {
+        $locale = apply_filters('plugin_locale', get_locale(), 'wc-product-search-admin');
+
+        load_textdomain('wc-product-search-admin', WP_LANG_DIR . '/wc-product-search-admin/wc-product-search-admin-' . $locale . '.mo');
+        load_plugin_textdomain('wc-product-search-admin', false, plugin_basename(dirname(__FILE__)) . '/languages');
+    }
+);
+
+add_filter(
+    'plugin_action_links_' . plugin_basename(__FILE__),
+    function ($links) {
+        $links[] = '<a href="' . admin_url('options-general.php?page=wc_psa_options') . '">' . __('Settings', 'wc-product-search-admin') . '</a>';
+
+        return $links;
+    }
+);
+
+add_action(
+    'plugins_loaded',
+    function () {
+        if (! defined('WC_VERSION')) {
+            add_action(
+                'admin_notices',
+                function () {
+                    ?>
+				<div class="notice notice-error">
+					<p><?php esc_html_e('WooCommerce Product Search Admin requires the WooCommerce plugin to be active.', 'wc-product-search-admin'); ?></p>
+				</div>
+					<?php
+
+                }
+            );
+
+            return;
+        }
+
+        // Composer dependencies
+        require_once WC_PSA_PATH . 'libs/vendor/algolia/algoliasearch-client-php/algoliasearch.php';
+        require_once WC_PSA_PATH . 'libs/vendor/autoload.php';
+
+        // Algolia framework classes
+        require_once WC_PSA_PATH . 'includes/Algolia/Index/RecordsProvider.php';
+        require_once WC_PSA_PATH . 'includes/Algolia/Index/IndexSettings.php';
+        require_once WC_PSA_PATH . 'includes/Algolia/Index/Index.php';
+
+        // Resources
+        require_once WC_PSA_PATH . 'includes/class-product-change-listener.php';
+        require_once WC_PSA_PATH . 'includes/class-products-index.php';
+        require_once WC_PSA_PATH . 'includes/class-options.php';
+        require_once WC_PSA_PATH . 'includes/class-plugin.php';
+
+        $plugin = \WC_Order_Product_Admin\Plugin::initialize(new \WC_Order_Product_Admin\Options());
+
+        if (is_admin()) {
+            require_once WC_PSA_PATH . 'includes/admin/class-options-page.php';
+            require_once WC_PSA_PATH . 'includes/admin/class-products-list-page.php';
+            require_once WC_PSA_PATH . 'includes/admin/class-ajax-reindex.php';
+            require_once WC_PSA_PATH . 'includes/admin/class-ajax-indexing-options-form.php';
+            require_once WC_PSA_PATH . 'includes/admin/class-ajax-algolia-account-settings-form.php';
+            new \WC_Order_Product_Admin\Admin\Options_Page($plugin->get_options());
+            new \WC_Order_Product_Admin\Admin\Products_List_Page($plugin->get_options());
+            if ($plugin->get_options()->has_algolia_account_settings()) {
+                new \WC_Order_Product_Admin\Admin\Ajax_Reindex($plugin->get_products_index(), $plugin->get_options());
+            }
+            new \WC_Order_Product_Admin\Admin\Ajax_Indexing_Options_Form($plugin->get_options());
+            new \WC_Order_Product_Admin\Admin\Ajax_Algolia_Account_Settings_Form($plugin->get_options());
+        }
+
+        // WP CLI commands
+        if (defined('WP_CLI') && WP_CLI && $plugin->get_options()->has_algolia_account_settings()) {
+            require_once WC_PSA_PATH . 'includes/class-commands.php';
+            $commands = new \WC_Order_Product_Admin\Commands($plugin->get_products_index(), $plugin->get_options());
+            WP_CLI::add_command('products', $commands);
+        }
+    }
+);

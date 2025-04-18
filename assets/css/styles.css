@@ -1,7 +1,163 @@
-#orders-search-input-search-input{
-    padding-left: 30px;
-    width: 100%;    
+/**
+ * WooCommerce Product Search Admin powered by Algolia
+ * Main stylesheet
+ */
+
+/* Admin body class for global styles */
+  .wp-list-table {
+    margin-top: 10px;
 }
 
-    
-.algolia-autocomplete{float:left}.algolia-autocomplete:before{content:url(../images/algolia-mark-square.svg);position:absolute;z-index:10;left:4px;top:4px;width:20px}#post-search-input{border-color:#00aeff;padding-left:26px;width:350px;border-radius:3px}#post-search-input:focus{box-shadow:none}.aa-dropdown-menu{width:348px;background:#fff;border:1px solid #00aeff;top:26px!important;border-top:none;border-bottom-left-radius:3px;border-bottom-right-radius:3px}.aa-suggestion{padding:10px;border-bottom:1px solid #f5f5f5}.aa-suggestion:after{content:" ";display:table;clear:both}.aa-suggestion a{text-decoration:none;color:#444}.aa-suggestion.aa-cursor{background:rgba(0,174,255,.1);cursor:pointer}.aa-suggestion em{font-style:normal;background-color:rgba(0,174,255,.1);border-bottom:1px solid #00aeff}.wc-osa__number{font-weight:700}.wc-osa__date,.wc-osa__line address{color:#9d9dbd}.wc-osa__line.wc-osa__billing_shipping{font-size:11px;font-style:italic}.aa-suggestion mark{float:left!important;margin-right:5px!important;height:18px!important;width:18px!important;font-size:18px!important;position:relative!important}.wc-osa__payment-method,.wc-osa__total{float:right}.wc-osa__payment-method,.wc-osa__shipping-method{color:#9d9dbd}
+/* Custom styling for WordPress default admin search input */
+  #post-search-input {
+    min-width: 300px;
+    padding: 5px 8px;
+    line-height: 1.4;
+    transition: all 0.2s ease-in-out;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07) inset;
+}
+
+  #post-search-input:focus {
+    min-width: 350px;
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Algolia autocomplete styling */
+.algolia-autocomplete {
+    width: 350px !important;
+    z-index: 99999 !important;
+}
+
+.aa-dropdown-menu {
+    background-color: #fff;
+    border: 1px solid #d6d6d6;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    margin-top: 3px;
+    width: 100%;
+    border-radius: 3px;
+    z-index: 99999;
+}
+
+.aa-dropdown-menu a {
+    color: #333;
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    border-bottom: 1px solid #f5f5f5;
+    transition: background-color 0.15s ease;
+}
+
+.aa-dropdown-menu a:hover {
+    background-color: #f8f8f8;
+}
+
+.aa-dropdown-menu a:last-child {
+    border-bottom: none;
+}
+
+/* Result styling */
+.wc-psa__line {
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.wc-psa__status {
+    background: #f0f0f0;
+    font-size: 11px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 6px;
+    text-transform: uppercase;
+}
+
+.wc-psa__title {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.wc-psa__sku {
+    color: #888;
+    margin-left: 6px;
+    font-size: 12px;
+}
+
+/* Stock status styling */
+.wc-psa__stock-instock {
+    color: #7ad03a;
+}
+
+.wc-psa__stock-outofstock {
+    color: #a44;
+}
+
+.wc-psa__stock-onbackorder {
+    color: #dd9933;
+}
+
+/* Categories and tags */
+.wc-psa__categories,
+.wc-psa__tags {
+    font-size: 12px;
+}
+
+/* Price information */
+.wc-psa__price-label,
+.wc-psa__stock-label,
+.wc-psa__categories-label,
+.wc-psa__tags-label,
+.wc-psa__type-label {
+    color: #666;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.wc-psa__regular-price {
+    color: #888;
+}
+
+.wc-psa__sale-price {
+    color: #a00;
+}
+
+/* Empty and footer messages */
+.aa-empty {
+    padding: 15px;
+    color: #888;
+    text-align: center;
+    font-style: italic;
+}
+
+.aa-footer {
+    padding: 8px;
+    color: #999;
+    font-size: 11px;
+    text-align: center;
+    border-top: 1px solid #f5f5f5;
+}
+
+/* Algolia powered badge */
+.algolia-powered {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 11px;
+    opacity: 0.7;
+    color: #666;
+    vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+    .algolia-autocomplete {
+        width: 100% !important;
+    }
+
+      #post-search-input {
+        min-width: 100%;
+    }
+
+      #post-search-input:focus {
+        min-width: 100%;
+    }
+}
