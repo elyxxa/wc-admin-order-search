@@ -213,6 +213,7 @@ class Products_Index extends Index implements RecordsProvider
             ->setSearchableAttributes(array(
                 'title',
                 'sku',
+                'ean',
                 'unordered(description)',
                 'unordered(short_description)',
                 'unordered(categories)',
@@ -267,6 +268,7 @@ class Products_Index extends Index implements RecordsProvider
         $record['title'] = $product->get_name();
         $record['status'] = $product->get_status();
         $record['sku'] = $product->get_sku();
+        $record['ean'] = get_post_meta($product->get_id(), '_alg_ean', true);
         $record['description'] = wp_strip_all_tags($product->get_description());
         $record['short_description'] = wp_strip_all_tags($product->get_short_description());
         $record['permalink'] = get_permalink($product->get_id());

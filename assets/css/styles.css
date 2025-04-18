@@ -16,6 +16,7 @@
     transition: all 0.2s ease-in-out;
     border-radius: 3px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.07) inset;
+    padding-left: 35px;
 }
 
   #post-search-input:focus {
@@ -28,6 +29,18 @@
 .algolia-autocomplete {
     width: 350px !important;
     z-index: 99999 !important;
+    position: relative;
+}
+
+.algolia-autocomplete::before {
+    content: url(../images/algolia-mark-square.svg);
+    position: absolute;
+    z-index: 10;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
 }
 
 .aa-dropdown-menu {

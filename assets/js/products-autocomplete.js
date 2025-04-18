@@ -23,11 +23,11 @@ if (jQuery(searchInputSelector).length === 0) {
 }
 
 // Add "Powered by Algolia" text with logo next to the search input
-var plugin_url = apsOptions.adminUrl.replace(/\/wp-admin\/$/, '');
-jQuery(searchInputSelector).after(
-    '<span class="algolia-powered" style="display: inline-block; margin-left: 5px; font-size: 11px; opacity: 0.7; vertical-align: middle;">Powered by ' +
-    '<img src="' + plugin_url + '/wp-content/plugins/wc-order-product-admin/assets/images/algolia-mark-square.svg" alt="Algolia" style="height: 16px; vertical-align: middle; margin: 0 2px;"> Algolia</span>'
-);
+// var plugin_url = apsOptions.adminUrl.replace(/\/wp-admin\/$/, '/wp-content/plugins/wk-admin-product-search');
+// jQuery(searchInputSelector).after(
+//     '<span class="algolia-powered" style="display: inline-block; margin-left: 5px; font-size: 11px; opacity: 0.7; vertical-align: middle;">Powered by ' +
+//     '<img src="' + plugin_url + '/assets/images/algolia-mark-square.svg" alt="Algolia" style="height: 16px; vertical-align: middle; margin: 0 2px;"> Algolia</span>'
+// );
 
 // Apply some specific styling to the standard admin search input
 if (searchInputSelector === '#post-search-input') {
