@@ -21,6 +21,13 @@ if (! defined('WC_OSA_PATH')) {
     define('WC_OSA_PATH', plugin_dir_path(WC_OSA_FILE));
 }
 
+// Declare HPOS compatibility
+add_action('before_woocommerce_init', function () {
+    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+    }
+});
+
 add_action(
     'init',
     function () {
